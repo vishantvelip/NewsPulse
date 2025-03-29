@@ -62,6 +62,7 @@ nav {
 
 .company-logo img {
     width: 100px; /* Adjusted logo size */
+    border-radius: 20px;
 }
 
 .nav-links ul {
