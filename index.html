@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
   <meta name="description" content="Portfolio of Vishant Velip, a Full Stack Developer showcasing skills, projects, and contact information.">
   <title>Vishant Velip - Full Stack Developer</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -198,6 +198,8 @@
       border: 2px solid rgba(245, 245, 244, 0.3);
       transition: all 0.3s ease;
       font-weight: 500;
+      position: relative;
+      overflow: hidden;
     }
 
     body.dark-mode .cta-button {
@@ -280,7 +282,7 @@
     }
 
     .about-text {
-      font-size: 1.1rem;
+      font-size: 1.9rem;
       line-height: 1.8;
       color: #1f2937;
     }
@@ -556,7 +558,7 @@
       transition: background 0.3s ease;
     }
 
-   ('--        body.dark-mode .submit-btn {
+    body.dark-mode .submit-btn {
       color: #f3f4f6;
     }
 
@@ -617,11 +619,40 @@
     }
 
     /* Responsive Design */
+
+    /* Large tablets/small laptops (1200px and below) */
+    @media (max-width: 1200px) {
+      .container {
+        max-width: 1000px;
+        padding: 0 1rem;
+      }
+      .about-content {
+        gap: 2rem;
+      }
+    }
+
+    /* Tablets and medium screens (992px and below) */
+    @media (max-width: 992px) {
+      .container {
+        max-width: 800px;
+      }
+      .about-image .profile-img {
+        width: 250px;
+        height: 250px;
+      }
+      .section-title {
+        font-size: 2rem;
+      }
+      .hero h1 {
+        font-size: 2.2rem;
+      }
+    }
+
+    /* Mobile devices (768px and below) */
     @media (max-width: 768px) {
       .nav-menu {
         display: none;
       }
-
       .nav-menu.active {
         display: flex;
         flex-direction: column;
@@ -631,39 +662,88 @@
         width: 100%;
         background: #1e3a8a;
         padding: 1rem;
+        z-index: 999;
       }
-
       body.dark-mode .nav-menu.active {
         background: #111827;
       }
-
       .mobile-menu {
         display: flex;
       }
-
+      .hero {
+        height: 70vh;
+      }
       .hero h1 {
-        font-size: 2.5rem;
+        font-size: 1.5rem;
       }
-
       .hero .subtitle {
-        font-size: 1.2rem;
+        font-size: 1rem;
       }
-
       .about-content {
         grid-template-columns: 1fr;
+        gap: 2rem;
         text-align: center;
       }
-
+      .about-image .profile-img {
+        width: 180px;
+        height: 180px;
+      }
       .contact-content {
         grid-template-columns: 1fr;
+        gap: 2rem;
       }
-
-      .skills-grid {
-        grid-template-columns: 1fr;
-      }
-
+      .skills-grid,
       .projects-grid {
         grid-template-columns: 1fr;
+      }
+      .container {
+        padding: 0 0.5rem;
+      }
+      .cta-button {
+        font-size: 1rem;
+        padding: 8px 16px;
+      }
+    }
+
+    /* Smallest screens (<480px) */
+    @media (max-width: 480px) {
+      .section-title {
+        font-size: 1.25rem;
+      }
+      .hero h1 {
+        font-size: 1rem;
+      }
+      .hero .subtitle {
+        font-size: 0.9rem;
+      }
+      .about-image .profile-img {
+        width: 110px;
+        height: 110px;
+      }
+      .container {
+        padding: 0 0.25rem;
+      }
+      .cta-button {
+        width: 100%;
+        padding: 10px 0;
+        font-size: 0.9rem;
+      }
+      .footer {
+        font-size: 0.85rem;
+      }
+    }
+
+    /* Ensure images and video are responsive */
+    img, video {
+      max-width: 100%;
+      height: auto;
+    }
+
+    /* Ripple effect for CTA button */
+    @keyframes ripple {
+      to {
+        transform: scale(4);
+        opacity: 0;
       }
     }
   </style>
@@ -735,7 +815,7 @@
   <!-- Projects Section -->
   <section id="projects" class="section projects" aria-label="Projects section">
     <div class="container">
-      <h2 class="section-title fade-in">Projects</h2>
+      <h2 class="section-title fade-in">Featured Projects</h2>
       <div class="projects-grid" id="projects-grid">
         <div class="loading">Loading projects...</div>
       </div>
@@ -752,7 +832,7 @@
             <i class="fas fa-envelope" aria-hidden="true"></i>
             <div>
               <h4>Email</h4>
-              <p><a href="mailto:webdeveloper10980@gmail.com" aria-label="Email Vishant Velip">webdeveloper10980@gmail.com</a></p>
+              <p><a href="mailto:velipvishant8@gmail.com" aria-label="Email Vishant Velip">velipvishant8@gmail.com</a></p>
             </div>
           </div>
   
@@ -865,17 +945,17 @@
             skillCard.className = 'skill-card fade-in';
             // Map skill names to Font Awesome icons or use a default icon
             const skillIcons = {
-  'Html': 'fab fa-html5',
-  'CSS': 'fab fa-css3-alt',
-  'JavaScript': 'fab fa-js-square',
-  'Node.js': 'fab fa-node-js',
-  'MongoDB': 'fas fa-database',
-  'Express.js': 'fas fa-server',
-  'Docker': 'fab fa-docker',
-  'React': 'fab fa-react',
-  'GraphQL': 'fas fa-project-diagram', 
-  'SQL': 'fas fa-database'
-};
+              'Html': 'fab fa-html5',
+              'CSS': 'fab fa-css3-alt',
+              'JavaScript': 'fab fa-js-square',
+              'Node.js': 'fab fa-node-js',
+              'MongoDB': 'fas fa-database',
+              'Express.js': 'fas fa-server',
+              'Docker': 'fab fa-docker',
+              'React': 'fab fa-react',
+              'GraphQL': 'fas fa-project-diagram',
+              'SQL': 'fas fa-database'
+            };
             const iconClass = skillIcons[skill.skillName] || 'fas fa-code';
             skillCard.innerHTML = `
               <div class="skill-icon">
@@ -1112,13 +1192,17 @@
     });
 
     // Hover effect for skill cards
-    document.querySelectorAll('.skill-card').forEach(card => {
-      card.addEventListener('mouseenter', () => {
+    document.addEventListener('mouseover', function(e) {
+      if (e.target.closest('.skill-card')) {
+        const card = e.target.closest('.skill-card');
         card.style.transform = 'translateY(-10px) scale(1.02)';
-      });
-      card.addEventListener('mouseleave', () => {
+      }
+    });
+    document.addEventListener('mouseout', function(e) {
+      if (e.target.closest('.skill-card')) {
+        const card = e.target.closest('.skill-card');
         card.style.transform = 'translateY(0) scale(1)';
-      });
+      }
     });
 
     // Ripple effect for CTA button
@@ -1141,18 +1225,6 @@
 
       setTimeout(() => ripple.remove(), 600);
     });
-
-    // Add CSS for ripple effect
-    const styleSheet = document.createElement('style');
-    styleSheet.textContent = `
-      @keyframes ripple {
-        to {
-          transform: scale(4);
-          opacity: 0;
-        }
-      }
-    `;
-    document.head.appendChild(styleSheet);
   </script>
 </body>
 </html>
