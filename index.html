@@ -323,6 +323,13 @@
       color: #2dd4bf;
     }
 
+    .skill-card img {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+      margin-bottom: 1rem;
+    }
+
     .skill-card h3 {
       font-size: 1.3rem;
       margin-bottom: 1rem;
@@ -549,7 +556,7 @@
       transition: background 0.3s ease;
     }
 
-    body.dark-mode .submit-btn {
+   ('--        body.dark-mode .submit-btn {
       color: #f3f4f6;
     }
 
@@ -707,10 +714,8 @@
         <div class="about-image fade-in">
           <img src="https://raw.githubusercontent.com/vishantvelip/NewsPulse/refs/heads/main/IMG_20250511_113439_277.webp" alt="Vishant Velip Profile Photo" class="profile-img">
         </div>
-        <div class="about-text fade-in">
-          <p>Hello! I'm Vishant Velip, a passionate Full Stack Developer with expertise in modern web technologies. I love creating efficient, scalable, and user-friendly applications that solve real-world problems.</p>
-          <p>With a strong foundation in both frontend and backend development, I enjoy working with cutting-edge technologies and continuously learning new skills to stay ahead in the ever-evolving tech landscape.</p>
-          <p>When I'm not coding, you can find me exploring new technologies, contributing to open-source projects, or sharing knowledge with the developer community.</p>
+        <div class="about-text fade-in" id="about-text">
+          <p>Loading about content...</p>
         </div>
       </div>
     </div>
@@ -720,56 +725,8 @@
   <section id="skills" class="section" aria-label="Skills section">
     <div class="container">
       <h2 class="section-title fade-in">My Skills</h2>
-      <div class="skills-grid">
-        <div class="skill-card fade-in">
-          <div class="skill-icon">
-            <i class="fab fa-html5" aria-hidden="true"></i>
-          </div>
-          <h3>HTML5</h3>
-          <p>Semantic markup and modern HTML5 features for building structured web content.</p>
-        </div>
-        <div class="skill-card fade-in">
-          <div class="skill-icon">
-            <i class="fab fa-css3-alt" aria-hidden="true"></i>
-          </div>
-          <h3>CSS3</h3>
-          <p>Advanced styling with CSS3, Flexbox, Grid, and responsive design principles.</p>
-        </div>
-        <div class="skill-card fade-in">
-          <div class="skill-icon">
-            <i class="fab fa-js-square" aria-hidden="true"></i>
-          </div>
-          <h3>JavaScript</h3>
-          <p>Modern ES6+ JavaScript for dynamic and interactive web applications.</p>
-        </div>
-        <div class="skill-card fade-in">
-          <div class="skill-icon">
-            <i class="fab fa-node-js" aria-hidden="true"></i>
-          </div>
-          <h3>Node.js</h3>
-          <p>Server-side JavaScript development with Node.js for scalable backend solutions.</p>
-        </div>
-        <div class="skill-card fade-in">
-          <div class="skill-icon">
-            <i class="fas fa-database" aria-hidden="true"></i>
-          </div>
-          <h3>MongoDB</h3>
-          <p>NoSQL database design and management with MongoDB for flexible data storage.</p>
-        </div>
-        <div class="skill-card fade-in">
-          <div class="skill-icon">
-            <i class="fas fa-server" aria-hidden="true"></i>
-          </div>
-          <h3>Express.js</h3>
-          <p>Fast and minimalist web framework for Node.js backend development.</p>
-        </div>
-        <div class="skill-card fade-in">
-          <div class="skill-icon">
-            <i class="fab fa-docker" aria-hidden="true"></i>
-          </div>
-          <h3>Docker</h3>
-          <p>Containerization and deployment with Docker for consistent development environments.</p>
-        </div>
+      <div class="skills-grid" id="skills-grid">
+        <div class="loading">Loading skills...</div>
       </div>
     </div>
   </section>
@@ -845,6 +802,116 @@
   </footer>
 
   <script>
+    // Function to fetch and display about content
+    async function loadAbout() {
+      const aboutText = document.getElementById('about-text');
+      aboutText.innerHTML = '<div class="loading">Loading about content...</div>';
+
+      try {
+        const response = await fetch('https://portfolio-api-epzm.onrender.com/api/about/json', {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const abouts = await response.json();
+        aboutText.innerHTML = '';
+
+        if (abouts.length > 0) {
+          abouts.forEach(about => {
+            const aboutParagraph = document.createElement('p');
+            aboutParagraph.className = 'fade-in';
+            aboutParagraph.textContent = about.content;
+            aboutText.appendChild(aboutParagraph);
+          });
+
+          document.querySelectorAll('#about-text .fade-in').forEach(el => {
+            observer.observe(el);
+          });
+        } else {
+          aboutText.innerHTML = '<div class="error">No about content found.</div>';
+        }
+      } catch (error) {
+        console.error('Error fetching about content:', error);
+        aboutText.innerHTML = `
+          <div class="error">
+            <p>Failed to load about content. Please check if the API server is running.</p>
+            <p>Error: ${error.message}</p>
+            <button onclick="loadAbout()" aria-label="Retry loading about content">Retry</button>
+          </div>
+        `;
+      }
+    }
+
+    // Function to fetch and display skills
+    async function loadSkills() {
+      const skillsGrid = document.getElementById('skills-grid');
+      skillsGrid.innerHTML = '<div class="loading">Loading skills...</div>';
+
+      try {
+        const response = await fetch('https://portfolio-api-epzm.onrender.com/api/skills/json', {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const skills = await response.json();
+        skillsGrid.innerHTML = '';
+
+        if (skills.length > 0) {
+          skills.forEach(skill => {
+            const skillCard = document.createElement('div');
+            skillCard.className = 'skill-card fade-in';
+            // Map skill names to Font Awesome icons or use a default icon
+            const skillIcons = {
+  'Html': 'fab fa-html5',
+  'CSS': 'fab fa-css3-alt',
+  'JavaScript': 'fab fa-js-square',
+  'Node.js': 'fab fa-node-js',
+  'MongoDB': 'fas fa-database',
+  'Express.js': 'fas fa-server',
+  'Docker': 'fab fa-docker',
+  'React': 'fab fa-react',
+  'GraphQL': 'fas fa-project-diagram', 
+  'SQL': 'fas fa-database'
+};
+            const iconClass = skillIcons[skill.skillName] || 'fas fa-code';
+            skillCard.innerHTML = `
+              <div class="skill-icon">
+                ${skill.projectImg ? `<img src="https://portfolio-api-epzm.onrender.com/${skill.projectImg}" alt="${skill.skillName} Icon" loading="lazy">` : `<i class="${iconClass}" aria-hidden="true"></i>`}
+              </div>
+              <h3>${skill.skillName}</h3>
+              <p>${skill.description || 'No description available.'}</p>
+            `;
+            skillsGrid.appendChild(skillCard);
+          });
+
+          document.querySelectorAll('.skill-card.fade-in').forEach(el => {
+            observer.observe(el);
+          });
+        } else {
+          skillsGrid.innerHTML = '<div class="error">No skills found.</div>';
+        }
+      } catch (error) {
+        console.error('Error fetching skills:', error);
+        skillsGrid.innerHTML = `
+          <div class="error">
+            <p>Failed to load skills. Please check if the API server is running.</p>
+            <p>Error: ${error.message}</p>
+            <button onclick="loadSkills()" aria-label="Retry loading skills">Retry</button>
+          </div>
+        `;
+      }
+    }
+
     // Function to fetch and display projects
     async function loadProjects() {
       const projectsGrid = document.getElementById('projects-grid');
@@ -862,7 +929,6 @@
         }
 
         const projects = await response.json();
-
         projectsGrid.innerHTML = '';
 
         if (projects.length > 0) {
@@ -912,7 +978,7 @@
       toggleButton.setAttribute('aria-label', isDarkMode ? 'Switch to light mode' : 'Switch to dark mode');
     };
 
-    // Check for saved dark mode preference
+    // Check for saved dark mode preference and load content
     window.addEventListener('load', () => {
       if (localStorage.getItem('darkMode') === 'true') {
         document.body.classList.add('dark-mode');
@@ -920,6 +986,8 @@
         document.getElementById('darkModeToggle').setAttribute('aria-label', 'Switch to light mode');
       }
 
+      loadAbout();
+      loadSkills();
       loadProjects();
     });
 
@@ -968,7 +1036,7 @@
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add('visible');
-          observer.unobserve(entry.target); // Unobserve to prevent re-triggering
+          observer.unobserve(entry.target);
         }
       });
     }, observerOptions);
@@ -997,7 +1065,7 @@
       }
 
       try {
-        const response = await fetch('https://api-8ixx.onrender.com/api/email/send-email', {
+        const response = await fetch('https://portfolio-api-epzm.onrender.com/api/email/send-email', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
