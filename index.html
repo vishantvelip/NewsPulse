@@ -442,6 +442,26 @@
       color: #f3f4f6;
     }
 
+    .project-link {
+      display: inline-block;
+      margin-top: 1rem;
+      padding: 0.5rem 1rem;
+      background: #2dd4bf;
+      color: #1f2937;
+      text-decoration: none;
+      border-radius: 5px;
+      font-size: 0.9rem;
+      transition: background 0.3s ease;
+    }
+
+    body.dark-mode .project-link {
+      color: #f3f4f6;
+    }
+
+    .project-link:hover {
+      background: #14b8a6;
+    }
+
     .loading {
       text-align: center;
       padding: 2rem;
@@ -619,8 +639,6 @@
     }
 
     /* Responsive Design */
-
-    /* Large tablets/small laptops (1200px and below) */
     @media (max-width: 1200px) {
       .container {
         max-width: 1000px;
@@ -631,7 +649,6 @@
       }
     }
 
-    /* Tablets and medium screens (992px and below) */
     @media (max-width: 992px) {
       .container {
         max-width: 800px;
@@ -648,7 +665,6 @@
       }
     }
 
-    /* Mobile devices (768px and below) */
     @media (max-width: 768px) {
       .nav-menu {
         display: none;
@@ -705,7 +721,6 @@
       }
     }
 
-    /* Smallest screens (<480px) */
     @media (max-width: 480px) {
       .section-title {
         font-size: 1.25rem;
@@ -733,13 +748,11 @@
       }
     }
 
-    /* Ensure images and video are responsive */
     img, video {
       max-width: 100%;
       height: auto;
     }
 
-    /* Ripple effect for CTA button */
     @keyframes ripple {
       to {
         transform: scale(4);
@@ -781,8 +794,7 @@
     </video>
     <div class="hero-content">
       <h1>Hi, I'm Vishant Velip - Crafting Digital Experiences</h1>
-      <p class="subtitle">Discover My Journey as a Full Stack Developer
-</p>
+      <p class="subtitle">Discover My Journey as a Full Stack Developer</p>
       <a href="#about" class="cta-button" aria-label="Learn more about Vishant Velip">See My Work</a>
     </div>
   </section>
@@ -835,7 +847,6 @@
               <p><a href="mailto:velipvishant8@gmail.com" aria-label="Email Vishant Velip">velipvishant8@gmail.com</a></p>
             </div>
           </div>
-  
           <div class="contact-item">
             <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
             <div>
@@ -868,6 +879,8 @@
     <div class="container">
       <div class="social-links">
         <a href="https://github.com/vishantvelip" target="_blank" rel="noopener" aria-label="GitHub profile"><i class="fab fa-github" aria-hidden="true"></i></a>
+        <a href="https://linkedin.com/in/vishantvelip" target="_blank" rel="noopener" aria-label="LinkedIn profile"><i class="fab fa-linkedin" aria-hidden="true"></i></a>
+        <a href="https://twitter.com/vishantvelip" target="_blank" rel="noopener" aria-label="Twitter profile"><i class="fab fa-twitter" aria-hidden="true"></i></a>
         <a href="mailto:webdeveloper10980@gmail.com" aria-label="Email contact"><i class="fas fa-envelope" aria-hidden="true"></i></a>
       </div>
       <p>© 2025 Vishant Velip. All rights reserved.</p>
@@ -943,7 +956,6 @@
           skills.forEach(skill => {
             const skillCard = document.createElement('div');
             skillCard.className = 'skill-card fade-in';
-            // Map skill names to Font Awesome icons or use a default icon
             const skillIcons = {
               'Html': 'fab fa-html5',
               'CSS': 'fab fa-css3-alt',
@@ -959,7 +971,7 @@
             const iconClass = skillIcons[skill.skillName] || 'fas fa-code';
             skillCard.innerHTML = `
               <div class="skill-icon">
-                ${skill.projectImg ? `<img src="https://portfolio-api-epzm.onrender.com/${skill.projectImg}" alt="${skill.skillName} Icon" loading="lazy">` : `<i class="${iconClass}" aria-hidden="true"></i>`}
+                ${skill.projectImg ? `<img src="https://portfolio-api-epzm.onrender.com/${skill.projectImg}" alt="${skill.skillName} Icon" loading="lazy" onerror="this.src='https://via.placeholder.com/48';">` : `<i class="${iconClass}" aria-hidden="true"></i>`}
               </div>
               <h3>${skill.skillName}</h3>
               <p>${skill.description || 'No description available.'}</p>
@@ -1008,16 +1020,21 @@
           projects.forEach(project => {
             const projectCard = document.createElement('div');
             projectCard.className = 'project-card fade-in';
+            // Parse technologies from description or use default
+            const technologies = project.description
+              ? project.description.match(/node\.js|express|mongodb|html-ejs/gi) || ['Frontend', 'Backend']
+              : ['Frontend', 'Backend'];
             projectCard.innerHTML = `
               <div class="project-image">
-                <img src="${project.projectImg ? `https://portfolio-api-epzm.onrender.com${project.projectImg}` : 'https://via.placeholder.com/350x200'}" alt="${project.title} Image" loading="lazy">
+                <img src="${project.projectImg || 'https://via.placeholder.com/350x200'}" alt="${project.title} Image" loading="lazy" onerror="this.src='https://via.placeholder.com/350x200';">
               </div>
               <div class="project-content">
                 <h3>${project.title}</h3>
                 <p>${project.description || 'No description available.'}</p>
                 <div class="project-tech">
-                  ${project.technologies ? project.technologies.map(tech => `<span class="tech-tag">${tech}</span>`).join('') : '<span class="tech-tag">Frontend</span><span class="tech-tag">Backend</span>'}
+                  ${technologies.map(tech => `<span class="tech-tag">${tech}</span>`).join('')}
                 </div>
+                ${project.projectsUrl ? `<a href="${project.projectsUrl}" class="project-link" target="_blank" rel="noopener">View Project</a>` : ''}
               </div>
             `;
             projectsGrid.appendChild(projectCard);
